@@ -1,38 +1,38 @@
-const urlBase = 'https://bcc-backend-lp-2-three.vercel.app/categorias';
+const urlBase = 'https://bcc-backend-lp-2-three.vercel.app/produtos';
 
-export async function gravarCategoria(categoria){
+export async function gravarProduto(produto){
     const resposta = await fetch(urlBase,{
         'method':"POST",
         'headers': { 
             'Content-Type':"application/json"
         },
-        'body': JSON.stringify(categoria)
+        'body': JSON.stringify(produto)
     });
     const resultado = await resposta.json();
     return resultado;
 }
 
-export async function alterarCategoria(categoria){
+export async function alterarProduto(produto){
     const resposta = await fetch(urlBase,{
         'method':"PUT",
         'headers': { 
             'Content-Type':"application/json"
         },
-        'body': JSON.stringify(categoria)
+        'body': JSON.stringify(produto)
     });
     const resultado = await resposta.json();
     return resultado;
 }
 
-export async function excluirCategoria(categoria){
-    const resposta = await fetch(urlBase + "/" + categoria.codigo,{
+export async function excluirProduto(produto){
+    const resposta = await fetch(urlBase + "/" + produto.codigo,{
         'method':"DELETE",
     });
     const resultado = await resposta.json();
     return resultado;
 }
 
-export async function consultarCategoria() {
+export async function consultarProduto() {
     const resposta = await fetch(urlBase,{
         'method':"GET"
     });
