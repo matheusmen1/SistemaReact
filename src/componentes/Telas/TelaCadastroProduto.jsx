@@ -26,6 +26,7 @@ export default function TelaCadastroProduto(props) {
         setListaDeProdutos(lista);
     });
    }, []); //listaVazia
+   // atualiza a lista com dados do backend
     return (
         <div>
             <Pagina>

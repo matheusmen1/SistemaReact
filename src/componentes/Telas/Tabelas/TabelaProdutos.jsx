@@ -11,23 +11,17 @@ export default function TabelaProdutos(props) {
 
     function excluirProdutoSelecionado(produto){
         if(window.confirm("Deseja realmente excluir o produto " + produto.descricao)){
-            //abordagem utilizando a sintaxe permitida da linguagem
            excluirProduto(produto)
-           .then((resultado)=>{
-                if(resultado.status)
-                    toast.success("Produto Excluido!");
+           .then((resultado)=>{ // é retornado da funcao async excluirProduto em servicoProduto
+                if(resultado.status){
+                    props.setListaDeProdutos(props.listaDeProdutos.filter((item)=>{// atualiza a lista do frontend(local),
+                                                                                    // condiocionalmente à reposta do backend
+                        return item.codigo != produto.codigo;
+                    }));
+                }
                 else
                     toast.error(resultado.mensagem);
            })
-
-            //abordagem elementar            
-            /*let novaLista= []
-            for (let i=0; i < props.listaDeProdutos.length; i++){
-                if (props.listaDeProdutos[i].codigo != produto.codigo){
-                    novaLista.push(props.listaDeProdutos[i])
-                }
-            }
-            props.setListaDeProdutos(novaLista);*/
         }
     }
 
@@ -90,6 +84,7 @@ export default function TabelaProdutos(props) {
                     </tbody>
                 </Table>
                 <p>Quatidade de produtos cadastrados: {props.listaDeProdutos.length}</p>
+                <Toaster position="top-right"/>
             </Container>
         </>
     );
