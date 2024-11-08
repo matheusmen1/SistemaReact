@@ -23,7 +23,7 @@ export default function TelaCadastroProduto(props) {
 
    useEffect(()=>{
     consultarProduto().then((lista)=>{
-        setProdutos(lista);
+        setListaDeProdutos(lista);
     });
    }, []); //listaVazia
     return (

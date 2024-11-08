@@ -3,7 +3,7 @@ import { Button, Spinner, Col, Form, InputGroup,
  } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { consultarCategoria } from '../../../servicos/servicoCategoria';
-import { gravarProduto } from '../../../servicos/servicoProduto';
+import { alterarProduto, gravarProduto } from '../../../servicos/servicoProduto';
 import toast, {Toaster} from 'react-hot-toast';
 
 export default function FormCadProdutos(props) {
@@ -17,6 +17,7 @@ export default function FormCadProdutos(props) {
             if (Array.isArray(resultado)){
                 setCategorias(resultado);
                 setTemCategorias(true);
+                toast.success("Categorias Carregadas com Sucesso!");
             }
             else{
                 toast.error("Não foi possível carregar as categorias");
@@ -37,11 +38,11 @@ export default function FormCadProdutos(props) {
 
             if (!props.modoEdicao) {
                 //cadastrar o produto
-                props.setListaDeProdutos([...props.listaDeProdutos, produto]);
                 gravarProduto(produto)
                 .then((resultado)=>{
                     if(resultado.status){
                         props.setExibirTabela(true);
+                        toast.success("Produto Cadastrado!");
                     }
                     else{
                         toast.error(resultado.mensagem);
@@ -59,27 +60,36 @@ export default function FormCadProdutos(props) {
                 ), produto]);*/
 
                 //não altera a ordem dos registros
-                props.setListaDeProdutos(props.listaDeProdutos.map((item) => {
+                 alterarProduto(produto)
+                    .then((resultado)=>{
+                    if (resultado.status){
+                        props.setModoEdicao(false);
+                        toast.success("Produto Alterado");
+                    }
+                    else
+                        toast.error(resultado.mensagem);
+                });
+                /*props.setListaDeProdutos(props.listaDeProdutos.map((item) => {
                     if (item.codigo !== produto.codigo)
                         return item
                     else
                         return produto
-                }));
+                }));*/
 
                 //voltar para o modo de inclusão
-                props.setModoEdicao(false);
+                
+            }
+            props.setModoEdicao(false);
                 props.setProdutoSelecionado({
-                    codigo: 0,
-                    descricao: "",
-                    precoCusto: 0,
-                    precoVenda: 0,
-                    qtdEstoque: 0,
-                    urlImagem: "",
-                    dataValidade: ""
+                codigo: 0,
+                descricao: "",
+                precoCusto: 0,
+                precoVenda: 0,
+                qtdEstoque: 0,
+                urlImagem: "",
+                dataValidade: ""
                 });
                 props.setExibirTabela(true);
-            }
-
         }
         else {
             setFormValidado(true);
@@ -106,7 +116,7 @@ export default function FormCadProdutos(props) {
                         id="codigo"
                         name="codigo"
                         value={produto.codigo}
-                        disabled={props.modoEdicao}
+                        disabled
                         onChange={manipularMudanca}
                     />
                     <Form.Control.Feedback type='invalid'>Por favor, informe o código do produto!</Form.Control.Feedback>
