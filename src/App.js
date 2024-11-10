@@ -5,7 +5,7 @@ import TelaMenu from "./componentes/Telas/TelaMenu";
 import Tela404 from "./componentes/Telas/Tela404";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import TelaLogin from "./componentes/Telas/TelaLogin";
-import { useState, createContext } from "react";
+import { useState, createContext } from 'react';
 
 export const ContextoUsuario = createContext();
 function App() {
@@ -15,7 +15,7 @@ function App() {
   });
   if (!usuario.logado){
     return (
-      <ContextoUsuario.Provider value = {{usuario, setUsuario}}>
+      <ContextoUsuario.Provider value = {{ usuario, setUsuario }}>
          <TelaLogin/>
       </ContextoUsuario.Provider>
     );
@@ -23,7 +23,7 @@ function App() {
   else{
     return (
       <div className="App">
-        <ContextoUsuario.Provider value = {{usuario, setUsuario}}/>
+        <ContextoUsuario.Provider value = {{ usuario, setUsuario }}>
           <BrowserRouter>
             { //A ordem das rotas é importante 
             }
@@ -34,7 +34,7 @@ function App() {
               <Route path="*" element={<Tela404 />} />
             </Routes>
           </BrowserRouter>
-        <ContextoUsuario.Provider/>
+        </ContextoUsuario.Provider>
       </div>
     );
   }

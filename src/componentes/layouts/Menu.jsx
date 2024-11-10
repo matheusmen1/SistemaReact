@@ -3,7 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import {Link} from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext } from "react";
 import { ContextoUsuario } from '../../App';
 export default function Menu(props) {
     const {usuario, setUsuario} = useContext(ContextoUsuario);
@@ -36,7 +36,7 @@ export default function Menu(props) {
                             setUsuario({
                                 "usuario":"",
                                 "logado":false
-                            })
+                            });
                         }}
                         >Sair</Nav.Link>
                     </Nav>

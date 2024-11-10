@@ -1,6 +1,7 @@
 import { Container, Form, Button} from "react-bootstrap";
-import { useContext, useRef, useState } from "react"; 
+import { useContext, useRef } from "react"; 
 import { ContextoUsuario } from "../../App";
+
 export default function TelaLogin(){
     const nomeUsuario = useRef();
     const senha = useRef();
@@ -19,14 +20,12 @@ export default function TelaLogin(){
     }
     return(
         <Container className="w-25 border p-2">
-            <Form>
+            <Form onSubmit={manipularSubmissao}>
                 <Form.Group
                  className="mb-3"
-                 controlId="formBasicEmail"
-                 onSubmit={manipularSubmissao}>
+                 controlId="formBasicEmail">
                     <Form.Label>Usuario</Form.Label>
-                    <Form.Control
-                     required  
+                    <Form.Control  
                      type="text" 
                      placeholder="Informe o usuário"
                      id = "usuario"
@@ -41,7 +40,6 @@ export default function TelaLogin(){
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Senha</Form.Label>
                     <Form.Control 
-                    required
                     type="password" 
                     placeholder="Password" 
                     id = "senha"
