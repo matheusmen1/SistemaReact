@@ -6,6 +6,7 @@ export default function TabelaProdutos(props) {
     function editarProduto(produto){
         props.setModoEdicao(true);
         props.setProdutoSelecionado(produto)
+        produto.dataValidade = new Date(produto.dataValidade).toLocaleDateString();
         props.setExibirTabela(false);
     }
 
