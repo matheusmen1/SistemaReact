@@ -23,20 +23,22 @@ function App() {
   else{
     return (
       <div className="App">
-        <ContextoUsuario.Provider value = {{ usuario, setUsuario }}>
-          <BrowserRouter>
-            { //A ordem das rotas é importante 
-            }
-            <Routes>
-              <Route path="/produto" element={<TelaCadastroProduto />} />
-              <Route path="/categoria" element={<TelaCadastroCategoria />} />
-              <Route path="/" element={<TelaMenu />} />
-              <Route path="*" element={<Tela404 />} />
-            </Routes>
-          </BrowserRouter>
-        </ContextoUsuario.Provider>
-      </div>
-    );
+        <Provider store={store}>
+          <ContextoUsuario.Provider value = {{ usuario, setUsuario }}>
+            <BrowserRouter>
+              { //A ordem das rotas é importante 
+              }
+              <Routes>
+                <Route path="/produto" element={<TelaCadastroProduto />} />
+                <Route path="/categoria" element={<TelaCadastroCategoria />} />
+                <Route path="/" element={<TelaMenu />} />
+                <Route path="*" element={<Tela404 />} />
+              </Routes>
+            </BrowserRouter>
+          </ContextoUsuario.Provider>
+        </Provider>
+       </div>
+      );
   }
 }
 
