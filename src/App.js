@@ -6,6 +6,8 @@ import Tela404 from "./componentes/Telas/Tela404";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import TelaLogin from "./componentes/Telas/TelaLogin";
 import { useState, createContext } from 'react';
+import store from './redux/store'
+import { Provider } from "react-redux";
 
 export const ContextoUsuario = createContext();
 function App() {

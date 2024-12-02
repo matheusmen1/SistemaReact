@@ -5,3 +5,4 @@ const store = configureStore({
         'produto':produtoReducer
     }
 });
+export default store;

@@ -1,7 +1,7 @@
 import { Alert } from "react-bootstrap";
 import FormCadProdutos from "./Formularios/FormCadProduto";
 import Pagina from "../layouts/Pagina";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TabelaProdutos from "./Tabelas/TabelaProdutos";
 //import { produtos } from "../../dados/mockProdutos";
 //import { consultarProduto } from "../../servicos/servicoProduto";
@@ -21,12 +21,12 @@ export default function TelaCadastroProduto(props) {
         categoria: {}
     });
 
-   useEffect(()=>{
-    consultarProduto().then((lista)=>{
-        setListaDeProdutos(lista);
-    });
-   }, []); //listaVazia
-   // atualiza a lista com dados do backend
+    // useEffect(()=>{
+    //     consultarProduto().then((lista)=>{
+    //         setListaDeProdutos(lista);
+    //     });
+    //    }, []); //listaVazia
+    //    // atualiza a lista com dados do backend
     return (
         <div>
             <Pagina>

@@ -1,16 +1,24 @@
-import { Button, Spinner, Col, Form, InputGroup,
-         Row
- } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { Button, Spinner, Col, Form, InputGroup, Row} from 'react-bootstrap';
 import { consultarCategoria } from '../../../servicos/servicoCategoria';
-import { alterarProduto, gravarProduto } from '../../../servicos/servicoProduto';
+//import { alterarProduto, gravarProduto } from '../../../servicos/servicoProduto';
 import toast, {Toaster} from 'react-hot-toast';
+// redux
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import { editarProdutoReducer, inserirProdutoReducer, buscarProdutos } from '../../../redux/produtoReducer';
+
 
 export default function FormCadProdutos(props) {
     const [produto, setProduto] = useState(props.produtoSelecionado);
     const [formValidado, setFormValidado] = useState(false);
     const [categorias, setCategorias] = useState([]);
     const [temCategorias, setTemCategorias] = useState(false);
+
+    const despachante = useDispatch();
+
+    useEffect(()=>{
+        despachante(buscarProdutos());
+    },[despachante]);
 
     useEffect(()=>{
         consultarCategoria().then((resultado)=>{
@@ -38,17 +46,18 @@ export default function FormCadProdutos(props) {
 
             if (!props.modoEdicao) {
                 //cadastrar o produto
-                gravarProduto(produto)
-                .then((resultado)=>{
-                    if(resultado.status){
-                        props.setExibirTabela(true);
-                        toast.success("Produto Cadastrado!");
-                    }
-                    else{
-                        toast.error(resultado.mensagem);
-                    }
-                });
-                
+                // gravarProduto(produto)
+                // .then((resultado)=>{
+                //     if(resultado.status){
+                //         props.setExibirTabela(true);
+                //         toast.success("Produto Cadastrado!");
+                //     }
+                //     else{
+                //         toast.error(resultado.mensagem);
+                //     }
+                // });
+                // redux
+                despachante(inserirProdutoReducer(produto));
             }
             else {
                 //editar o produto
@@ -59,16 +68,17 @@ export default function FormCadProdutos(props) {
                     }
                 ), produto]);*/
 
-                //não altera a ordem dos registros
-                 alterarProduto(produto)
-                    .then((resultado)=>{
-                    if (resultado.status){
-                        props.setModoEdicao(false);
-                        toast.success("Produto Alterado");
-                    }
-                    else
-                        toast.error(resultado.mensagem);
-                });
+                //antigo
+                //  alterarProduto(produto)
+                //     .then((resultado)=>{
+                //     if (resultado.status){
+                //         props.setModoEdicao(false);
+                //         toast.success("Produto Alterado");
+                //     }
+                //     else
+                //         toast.error(resultado.mensagem);
+                // });
+
                 /*props.setListaDeProdutos(props.listaDeProdutos.map((item) => {
                     if (item.codigo !== produto.codigo)
                         return item
@@ -77,7 +87,9 @@ export default function FormCadProdutos(props) {
                 }));*/
 
                 //voltar para o modo de inclusão
-                
+                //redux
+                despachante(editarProdutoReducer(produto));
+                props.setModoEdicao(false);
             }
             props.setModoEdicao(false);
                 props.setProdutoSelecionado({
