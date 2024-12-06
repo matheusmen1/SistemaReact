@@ -1,36 +1,40 @@
 import { Alert } from "react-bootstrap";
-import FormCadCategoria from "./Formularios/FormCadCategoria";
+import FormCadUsuario from "./Formularios/FormCadUsuario";
 import Pagina from "../layouts/Pagina";
 import { useState } from "react";
-import TabelaCategorias from "./Tabelas/TabelaCategorias";
-
-export default function TelaCadastroCategoria(props) {
+import TabelaUsuario from "./Tabelas/TabelaUsuario";
+export default function TelaCadastroUsuario(props) {
     const [exibirTabela, setExibirTabela] = useState(true);
     const [modoEdicao, setModoEdicao] = useState(false);
-    const [categoriaSelecionado, setCategoriaSelecionado] = useState({
-        codigo:0,
-        descricao:""
+    const [usuarioSelecionado, setUsuarioSelecionado] = useState({
+        codigo: 0,
+        nickname: "",
+        senha: "",
+        urlAvatar: "",
+        previlegio: ""
     });
+
     return (
         <div>
             <Pagina>
                 |<Alert className="mt-02 mb-02 success text-center" variant="success">
                     <h2>
-                        Cadastro de Categoria
+                        Cadastro de Usuario
                     </h2>
                 </Alert>
                 {
                     exibirTabela ?
-                        <TabelaCategorias 
+                        <TabelaUsuario 
                                         setExibirTabela={setExibirTabela}
                                         setModoEdicao={setModoEdicao}
-                                        setCategoriaSelecionado={setCategoriaSelecionado} /> :
-                        <FormCadCategoria
+                                        setUsuarioSelecionado={setUsuarioSelecionado} /> :
+                        <FormCadUsuario
                                          setExibirTabela={setExibirTabela}
-                                         categoriaSelecionado={categoriaSelecionado}
-                                         setCategoriaSelecionado={setCategoriaSelecionado}
+                                         usuarioSelecionado={usuarioSelecionado}
+                                         setUsuarioSelecionado={setUsuarioSelecionado}
                                          modoEdicao={modoEdicao}
                                          setModoEdicao={setModoEdicao}
+
                                          />
                 }
             </Pagina>

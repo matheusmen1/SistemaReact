@@ -2,33 +2,45 @@ import { Alert, Button, Container, Spinner,Table } from "react-bootstrap";
 import toast, {Toaster} from "react-hot-toast"
 
 // redux
+import { useContext } from "react";
+import { ContextoUsuario } from "../../../App.js";
 import { useSelector, useDispatch } from "react-redux";
-import { buscarProdutos, apagarProdutoReducer} from "../../../redux/produtoReducer";
+import { buscarUsuarios, apagarUsuarioReducer} from "../../../redux/usuarioReducer";
 import ESTADO from "../../../redux/estados";
 import { useEffect } from "react";
 
-export default function TabelaProdutos(props) {
+export default function TabelaUsuario(props) {
 
-    const {estado, mensagem, listaDeProdutos} = useSelector(state => state.produto)
+    const {estado, mensagem, listaDeUsuarios} = useSelector(state => state.usuario)
     const despachante = useDispatch();
+    const {usuario, setUsuario} = useContext(ContextoUsuario);
+
 
     useEffect(()=>{
-        despachante(buscarProdutos());
+        despachante(buscarUsuarios());
     },[despachante]);
-    
-    function editarProduto(produto){
+    function verificarPrevilegio(){
+        if (usuario.previlegio.toLowerCase() === 'basico')
+        {
+            toast.error("Permissão Negada")
+            return false;
+        }
+        else
+            return true;
+    }
+    function editarUsuario(usuario){
 
-    
+   
         props.setModoEdicao(true);
-        props.setProdutoSelecionado(produto)
+        props.setUsuarioSelecionado(usuario)
         props.setExibirTabela(false);
         
     }
 
-    function excluirProdutoSelecionado(produto){
-        if(window.confirm("Deseja realmente excluir o produto " + produto.descricao)){
-            despachante(apagarProdutoReducer(produto));
-            toast.success("Produto Apagado!")
+    function excluirUsuarioSelecionado(usuario){
+        if(window.confirm("Deseja realmente excluir o usuario " + usuario.nickname)){
+            despachante(apagarUsuarioReducer(usuario));
+            toast.success("Usuario Apagado!")
         }
 
     }
@@ -53,50 +65,45 @@ export default function TabelaProdutos(props) {
                 <Container>
                     <Button className="mb-3" variant="primary"
                         onClick={() => {
-                            props.setExibirTabela(false);
+                            if (verificarPrevilegio())
+                                props.setExibirTabela(false);
                         }}>
                         Adicionar
                     </Button>
                     <Table striped bordered hover>
                         <thead>
                             <th>Código</th>
-                            <th>Descrição</th>
-                            <th>Preço de custo</th>
-                            <th>Preço de venda</th>
-                            <th>Qtd. em estoque</th>
-                            <th>Imagem</th>
-                            <th>Validade</th>
-                            <th>Categoria</th>
-                            <th>Fornecedor</th>
+                            <th>Nickname</th>
+                            <th>Senha</th>
+                            <th>urlAvatar</th>
+                            <th>Privilegio</th>
                             <th>Ações</th>
                         </thead>
                         <tbody>
                             {
-                                listaDeProdutos?.map((produto) => {
+                                listaDeUsuarios?.map((usuario) => {
                                     return (
                                         <tr>
-                                            <td>{produto.codigo}</td>
-                                            <td>{produto.descricao}</td>
-                                            <td>{produto.precoCusto}</td>
-                                            <td>{produto.precoVenda}</td>
-                                            <td>{produto.qtdEstoque}</td>
+                                            <td>{usuario.codigo}</td>
+                                            <td>{usuario.nickname}</td>
+                                            <td>{usuario.senha}</td>
                                             <td><img style={{
                                                             "width":"40px",
                                                             "height":"40px"
-                                                            }} src={produto.urlImagem} alt="foto do produto" /></td>
-                                            <td>{produto.dataValidade}</td>
-                                            <td>{produto.categoria.descricao}</td>
-                                            <td>{produto.fornecedor.nome}</td>
+                                                            }} src={usuario.urlAvatar} alt="foto do usuario" /></td>
+                                            <td>{usuario.previlegio}</td>
                                             <td>
                                                 <Button onClick={()=>{
-                                                    editarProduto(produto);
+                                                    if (verificarPrevilegio())
+                                                        editarUsuario(usuario);
                                                 }}variant="warning">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
                                                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                                         <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                                                     </svg>
                                                 </Button> <Button onClick={ ()=> {
-                                                    excluirProdutoSelecionado(produto);
+                                                    if (verificarPrevilegio())
+                                                        excluirUsuarioSelecionado(usuario);
                                                 }} variant="danger">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
                                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
@@ -110,7 +117,7 @@ export default function TabelaProdutos(props) {
                             }
                         </tbody>
                     </Table>
-                    <p>Quatidade de produtos cadastrados: {listaDeProdutos.length}</p>
+                    <p>Quatidade de usuarios cadastrados: {listaDeUsuarios.length}</p>
                     <Toaster position = "top-right"/>
                 </Container>
             </>

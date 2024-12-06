@@ -1,36 +1,42 @@
 import { Alert } from "react-bootstrap";
-import FormCadCategoria from "./Formularios/FormCadCategoria";
+import FormCadFornecedor from "./Formularios/FormCadFornecedor";
 import Pagina from "../layouts/Pagina";
 import { useState } from "react";
-import TabelaCategorias from "./Tabelas/TabelaCategorias";
-
-export default function TelaCadastroCategoria(props) {
+import TabelaFornecedor from "./Tabelas/TabelaFornecedor";
+export default function TelaCadastroFornecedor(props) {
     const [exibirTabela, setExibirTabela] = useState(true);
     const [modoEdicao, setModoEdicao] = useState(false);
-    const [categoriaSelecionado, setCategoriaSelecionado] = useState({
-        codigo:0,
-        descricao:""
+    const [fornecedorSelecionado, setFornecedorSelecionado] = useState({
+        codigo: 0,
+        nome: "",
+        cidade: "",
+        cnpj: "",
+        cep: "",
+        endereco: "",
+        telefone: ""
     });
+
     return (
         <div>
             <Pagina>
                 |<Alert className="mt-02 mb-02 success text-center" variant="success">
                     <h2>
-                        Cadastro de Categoria
+                        Cadastro de Fornecedor
                     </h2>
                 </Alert>
                 {
                     exibirTabela ?
-                        <TabelaCategorias 
+                        <TabelaFornecedor 
                                         setExibirTabela={setExibirTabela}
                                         setModoEdicao={setModoEdicao}
-                                        setCategoriaSelecionado={setCategoriaSelecionado} /> :
-                        <FormCadCategoria
+                                        setFornecedorSelecionado={setFornecedorSelecionado} /> :
+                        <FormCadFornecedor
                                          setExibirTabela={setExibirTabela}
-                                         categoriaSelecionado={categoriaSelecionado}
-                                         setCategoriaSelecionado={setCategoriaSelecionado}
+                                         fornecedorSelecionado={fornecedorSelecionado}
+                                         setFornecedorSelecionado={setFornecedorSelecionado}
                                          modoEdicao={modoEdicao}
                                          setModoEdicao={setModoEdicao}
+
                                          />
                 }
             </Pagina>

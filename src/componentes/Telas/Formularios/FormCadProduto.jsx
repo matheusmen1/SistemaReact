@@ -1,6 +1,7 @@
 import { Button, Spinner, Col, Form, InputGroup, Row} from 'react-bootstrap';
 import { consultarCategoria } from '../../../servicos/servicoCategoria';
-//import { alterarProduto, gravarProduto } from '../../../servicos/servicoProduto';
+import { consultarFornecedor } from '../../../servicos/servicoFornecedor';
+
 import toast, {Toaster} from 'react-hot-toast';
 // redux
 import { useState, useEffect } from 'react';
@@ -13,7 +14,8 @@ export default function FormCadProdutos(props) {
     const [formValidado, setFormValidado] = useState(false);
     const [categorias, setCategorias] = useState([]);
     const [temCategorias, setTemCategorias] = useState(false);
-
+    const [fornecedor, setFornecedor] = useState([]);
+    const [temFornecedor, setTemFornecedor] = useState(false);
     const despachante = useDispatch();
 
     useEffect(()=>{
@@ -40,56 +42,41 @@ export default function FormCadProdutos(props) {
         setProduto({...produto, categoria:{codigo:evento.currentTarget.value}})
 
     }
+
+    useEffect(()=>{
+        consultarFornecedor().then((resultado)=>{
+            if (Array.isArray(resultado)){
+                setFornecedor(resultado);
+                setTemFornecedor(true);
+                toast.success("Fornecedores Carregados com Sucesso!");
+            }
+            else{
+                toast.error("Não foi possível carregar os fornecedores");
+            }
+        }).catch((erro)=>{
+            setTemFornecedor(false);
+            toast.error("Não foi possível carregar os fornecedores");
+        });
+        
+    },[]); //didMount
+    function selecionarFornecedor(evento){
+        setProduto({...produto, fornecedor:{codigo:evento.currentTarget.value}})
+
+    }
     function manipularSubmissao(evento) {
         const form = evento.currentTarget;
         if (form.checkValidity()) {
 
             if (!props.modoEdicao) {
                 //cadastrar o produto
-                // gravarProduto(produto)
-                // .then((resultado)=>{
-                //     if(resultado.status){
-                //         props.setExibirTabela(true);
-                //         toast.success("Produto Cadastrado!");
-                //     }
-                //     else{
-                //         toast.error(resultado.mensagem);
-                //     }
-                // });
-                // redux
                 despachante(inserirProdutoReducer(produto));
+                toast.success("Produto Inserido!")
             }
             else {
-                //editar o produto
-                /*altera a ordem dos registros
-                props.setListaDeProdutos([...props.listaDeProdutos.filter(
-                    (item) => {
-                        return item.codigo !== produto.codigo;
-                    }
-                ), produto]);*/
 
-                //antigo
-                //  alterarProduto(produto)
-                //     .then((resultado)=>{
-                //     if (resultado.status){
-                //         props.setModoEdicao(false);
-                //         toast.success("Produto Alterado");
-                //     }
-                //     else
-                //         toast.error(resultado.mensagem);
-                // });
-
-                /*props.setListaDeProdutos(props.listaDeProdutos.map((item) => {
-                    if (item.codigo !== produto.codigo)
-                        return item
-                    else
-                        return produto
-                }));*/
-
-                //voltar para o modo de inclusão
-                //redux
                 despachante(editarProdutoReducer(produto));
                 props.setModoEdicao(false);
+                toast.success("Produto Alterado!")
             }
             props.setModoEdicao(false);
                 props.setProdutoSelecionado({
@@ -99,7 +86,9 @@ export default function FormCadProdutos(props) {
                 precoVenda: 0,
                 qtdEstoque: 0,
                 urlImagem: "",
-                dataValidade: ""
+                dataValidade: "",
+                categoria:{},
+                fornecedor:{}
                 });
                 props.setExibirTabela(true);
         }
@@ -251,12 +240,44 @@ export default function FormCadProdutos(props) {
                     }
                 </Form.Group>
             </Row>
+            <Row className="mb-4">
+            <Form.Group as={Col} md={7}>
+                    <Form.Label>Fornecedor:</Form.Label>
+                    <Form.Select id='fornecedor' name='fornecedor' onChange={selecionarFornecedor}>
+                        {
+                            fornecedor.map((fornecedor) =>{
+                                return <option value={fornecedor.codigo}>
+                                            {fornecedor.nome}
+                                       </option>
+                            })
+                        }
+                        
+                    </Form.Select>
+                </Form.Group>
+                <Form.Group as={Col} md={1}>
+                    {
+                      !temFornecedor ? <Spinner className='mt-4' animation="border" variant="success" />
+                      : ""
+                    }
+                </Form.Group>
+            </Row>
             <Row className='mt-2 mb-2'>
                 <Col md={1}>
                     <Button type="submit" disabled={!temCategorias}>{props.modoEdicao ? "Alterar" : "Confirmar"}</Button>
                 </Col>
                 <Col md={{ offset: 1 }}>
                     <Button onClick={() => {
+                        props.setProdutoSelecionado({
+                            codigo: 0,
+                            descricao: "",
+                            precoCusto: 0,
+                            precoVenda: 0,
+                            qtdEstoque: 0,
+                            urlImagem: "",
+                            dataValidade: "",
+                            categoria:{},
+                            fornecedor:{}
+                            });
                         props.setExibirTabela(true);
                     }}>Voltar</Button>
                 </Col>
