@@ -33,7 +33,7 @@ export default function TelaLogin(){
         {
             setUsuario({
                 "usuario": usuarioDigitado,
-                "privilegio":"Gerente",
+                "privilegio":"Administrador",
                 "logado":true
             });
         }

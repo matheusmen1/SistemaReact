@@ -86,7 +86,7 @@ export default function TabelaUsuario(props) {
                                         <tr>
                                             <td>{usuario.codigo}</td>
                                             <td>{usuario.nickname}</td>
-                                            <td>{usuario.senha}</td>
+                                            <td>*****</td>
                                             <td><img style={{
                                                             "width":"40px",
                                                             "height":"40px"
