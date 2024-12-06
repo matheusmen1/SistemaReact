@@ -22,6 +22,7 @@ export default function Menu(props) {
                             <NavDropdown.Item as={Link} to="/produto">Produtos</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/categoria">Categorias</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/usuario">Usuarios</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/privilegio">Privilegios</NavDropdown.Item>
                         </NavDropdown>
                         <NavDropdown title="Operações" id="basic-nav-dropdown">
                             <NavDropdown.Item>Compra</NavDropdown.Item>
@@ -46,7 +47,7 @@ export default function Menu(props) {
                     </Nav>
                     <Nav className="ms-auto">
                         <Nav.Link>Usuário Logado: {usuario.usuario}</Nav.Link>
-                        <Nav.Link>Privilégio: {usuario.previlegio}</Nav.Link>
+                        <Nav.Link>Privilégio: {usuario.privilegio}</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

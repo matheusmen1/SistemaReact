@@ -3,12 +3,12 @@ import { useContext, useRef, useEffect, useState } from "react";
 import { ContextoUsuario } from "../../App";
 import { consultarUsuario } from "../../servicos/servicoUsuario";
 import toast, {Toaster} from 'react-hot-toast';
-import { se } from "date-fns/locale";
+
 
 export default function TelaLogin(){
     const nomeUsuario = useRef();
     const senha = useRef();
-    const {usuario, setUsuario} = useContext(ContextoUsuario);
+    const {setUsuario} = useContext(ContextoUsuario);
     const [usuariosCadastrados, setUsuariosCadastrados] = useState([]);
     useEffect(()=>{
         consultarUsuario().then((resultado)=>{
@@ -33,14 +33,14 @@ export default function TelaLogin(){
         {
             setUsuario({
                 "usuario": usuarioDigitado,
-                "previlegio":"Gerente",
+                "privilegio":"Gerente",
                 "logado":true
             });
         }
         else
         {
             var i = 0;
-            while (i < usuariosCadastrados.length && usuariosCadastrados[i].nickname != usuarioDigitado)
+            while (i < usuariosCadastrados.length && usuariosCadastrados[i].nickname !== usuarioDigitado)
                 i++;
             if (i < usuariosCadastrados.length)
             {
@@ -48,7 +48,7 @@ export default function TelaLogin(){
                 {
                     setUsuario({
                         "usuario":usuariosCadastrados[i].nickname,
-                        "previlegio":usuariosCadastrados[i].previlegio,
+                        "privilegio":usuariosCadastrados[i].privilegio.descricao,
                         "logado":true
                     });
                 }
